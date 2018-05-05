@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!-- 
+	SPEL表达式语言：支持运行时查询和操作对象图的强大的表达式语言
+	语法类似于EL：SPEL使用#{……}作为定界符，所有在大括号中的字符都将认为是Spel
+	通过SpEL可以实现
+		通过bean的id对bean进行引用
+		调用方法以及引用对象中的属性
+		计算表达式的值
+		正则表达式的匹配
+	字面量
+		整数： #{1}
+		小数：#{2.4}
+		科学计数法：#{2e3}
+		String：可以使用单引号或者双引号
+		Boolean：#{false}
+	引用其他对象，其他对象的属性，调用其他方法，还可以链式操作
+	算数运算符：+ - * / % ^,加号还可以用作字符串连接
+	比较运算符：< > == <= >= lt gt eq le ge
+	逻辑运算符：and or not |
+	if-else运算符
+	正则表达式
+	调用静态太方法或静态属性：通过T()调用一个类的静态方法，将返回一个Class Object，然后在调用相应的方法或属性
+	
+ -->
+<bean id="car" class="com.spring.demo.xml.entity.Car">
+	<property name="carName" value="#{'FormCar'}"></property>
+	<property name="price" value="#{345.98}"></property>
+	<property name="id" value="#{1}"></property>
+</bean>
+
+<bean id="person" class="com.spring.demo.xml.entity.Person" >
+	<property name="car" value="#{car}"></property>
+	<property name="userName" value="#{car.carName + car.id}"></property>
+	<property name="password" value="#{car.getCarName().toUpperCase()}"></property>
+	<property name="hasCar" value="#{car.id != null and car.id gt 0}"></property>
+	<property name="age" value="#{T(java.lang.Math).PI * car.id}"/>
+	<property name="email" value="#{('iuy@qq.com' matches '([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+') ? 'iuy@qq.com' : 'email'}"/>
+</bean>
+
+</beans>

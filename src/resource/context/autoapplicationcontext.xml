@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+	
+	<bean id = "car" class="com.spring.demo.xml.entity.Car" p:carName="FirstCar" p:id="1" p:price="239" />
+	<!-- <bean id = "car2" class="com.spring.demo.xml.entity.Car" p:carName="SecondCar" p:id="2" p:price="276" /> -->
+	<bean id = "card1" class="com.spring.demo.xml.entity.Card" p:cardName="FirstCard" p:cardNum="3" />
+	<bean id = "card2" class="com.spring.demo.xml.entity.Card" p:cardName="SecondCard" p:cardNum="0" />
+	
+	<!-- 可以使用autowire属性指定自动装配的方式，
+		byName根据bean的名字和当前bean的setter风格的属性名进行自动装配，若有匹配的，则进行自动装配，若没有匹配的，则不装配
+		byType根据bean的类型和当前bean的属性的类型进行自动装配.若ioc容器中有一个以上的类型匹配的bean，则抛异常，所以将car2注解，而card与person是集合关系，所以可以多个
+	 -->
+	<bean id="person" class="com.spring.demo.xml.entity.Person" p:userName="Jom" autowire="byName"/>
+	
+	<bean id="person2" class="com.spring.demo.xml.entity.Person" p:userName="Petty" autowire="byType"/>
+
+</beans>

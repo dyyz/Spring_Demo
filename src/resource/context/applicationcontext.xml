@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd 
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd  ">
+
+	<bean id="person" class="com.spring.demo.xml.entity.Person">
+		<!-- value属性标签复制
+			字面值含特殊字符，可以使用[!CDATA[]]包裹
+			属性注入优先于构造注入
+		 -->
+		<property name="userName">
+			<value>[!CDATA[My^Name/Okay]]</value>
+		</property>
+		<property name="password" value="password1" />
+		
+		<!-- 构造注入，type注入类型，区分构造器，index构造器参数位置 -->
+		<constructor-arg value="password@Tom" type="java.lang.String" index="1"/>
+		<constructor-arg value="Tom" type="java.lang.String" index="0"/>
+		<constructor-arg value="23" type="int" />
+		
+		<!-- 赋null值 -->
+		<constructor-arg type="java.lang.String"><null /></constructor-arg>
+		<property name="sex"><null /></property>
+		
+		<!-- 使用property的ref属性建立bean之间的引用关系 -->
+		<property name="car" ref="car1"></property>
+		<property name="address">
+			<ref bean="address1"></ref>
+		</property>
+		<!-- 属性注入为级联属性赋值 ,注意属性需要先初始化后在可以为级联属性赋值，否则会有异常 -->
+		<property name="address.id" value="1"></property>
+		<property name="address.location" value="address-1-location"></property>
+	</bean>
+	
+	<bean id="person3" class="com.spring.demo.xml.entity.Person">
+	<constructor-arg value="Nick" type="java.lang.String"/>
+		<constructor-arg value="password@Nick" type="java.lang.String"/>
+		<constructor-arg value="19" type="int" />
+		<constructor-arg type="com.spring.demo.xml.entity.Car">
+			<ref bean = "car1" />
+		</constructor-arg>
+		<!-- 构造注入，为级联属性赋值，引用地址相应的发生变化，其他地方引用car1时，carName变成renameCarToYello而不是blueCar -->
+		<property name="car.carName" value="renameCarToYello"></property>
+	</bean>
+	
+	<bean id="person2" class="com.spring.demo.xml.entity.Person">
+		<constructor-arg value="password@Jerry" type="java.lang.String"/>
+		<constructor-arg value="Jerry" type="java.lang.String"/>
+		<constructor-arg value="24" type="int" />
+	</bean>
+	
+	<bean id="person4" class="com.spring.demo.xml.entity.Person">
+		<constructor-arg value="Petter" type="java.lang.String"/>
+		<constructor-arg value="password@Petter" type="java.lang.String"/>
+		<constructor-arg value="21" type="int" />
+		<constructor-arg type="com.spring.demo.xml.entity.Car">
+			<!-- 内部bean,无id，只能在内部使用 -->
+			<bean class="com.spring.demo.xml.entity.Car">
+				<!-- price -->
+				<constructor-arg value="139"/>
+				<!-- carName -->
+				<constructor-arg value="innerRedCar"/>
+				<constructor-arg value="3"/>
+			</bean>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="person5" class="com.spring.demo.xml.entity.Person">
+		<constructor-arg value="Paul" type="java.lang.String"/>
+		<constructor-arg value="password@Paul" type="java.lang.String"/>
+		<constructor-arg value="35" type="int" />
+		<constructor-arg type="com.spring.demo.xml.entity.Car">
+			<!-- 内部bean,无id，只能在内部使用 -->
+			<bean class="com.spring.demo.xml.entity.Car">
+				<property name="carName" value="blackCar"></property>
+				<property name="price" value="330"></property>
+				<property name="id" value="2"></property>
+			</bean>
+		</constructor-arg>
+	</bean>
+
+	<!-- 共享list -->
+	<util:list id="cardList">
+		<ref bean="card1" />
+		<ref bean="card2" />
+		<bean class="com.spring.demo.xml.entity.Card">
+			<property name="cardName" value="innerThreeCard"/>
+			<property name="cardNum" value="3"/>
+		</bean>
+	</util:list>
+	
+	<!-- list -->
+	<bean id="person6" class="com.spring.demo.xml.entity.Person">
+		<constructor-arg value="password@Jerry" type="java.lang.String"/>
+		<constructor-arg value="Jerry" type="java.lang.String"/>
+		<constructor-arg value="24" type="int" />
+		<property name="cards">
+			<ref bean="cardList"/>
+		</property>
+	</bean>
+	
+	<bean id="person7" class="com.spring.demo.xml.entity.Person">
+		<constructor-arg value="password@Jerry" type="java.lang.String"/>
+		<constructor-arg value="Jerry" type="java.lang.String"/>
+		<constructor-arg value="24" type="int" />
+		<property name="cards">
+			<list>
+				<ref bean="card1"></ref>
+				<!-- 内部bean,无id，只能在内部使用 -->
+				<bean class="com.spring.demo.xml.entity.Card">
+					<property name="cardName" value="innerP7SecondCard"/>
+					<property name="cardNum" value="3"/>
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- Map -->
+	<!-- 简单常量使用 key 和 value 来定义; Bean 引用通过 key-ref 和 value-ref 属性定义   -->
+	<bean id="person8" class="com.spring.demo.xml.entity.Person">
+		<property name="cardMap">
+			<map>
+				<!-- value是bean -->
+				<entry key="AA" value-ref="card1" />
+				<entry key="CC">
+					<bean class="com.spring.demo.xml.entity.Card">
+						<property name="cardName" value="innerForP8SecondCard"/>
+						<property name="cardNum" value="4"/>
+					</bean>
+				</entry>
+			</map>
+		</property>
+		
+		<!-- key是bean -->
+		<property name="keyIsObject">
+			<map>
+				<entry value="AA" key-ref="card1" />
+				<entry>
+					<key>
+						<bean class="com.spring.demo.xml.entity.Card">
+							<property name="cardName" value="innerForP8SecondCard"/>
+							<property name="cardNum" value="4"/>
+						</bean>
+					</key>
+					<value>BB</value>
+				</entry>
+			</map>
+		</property>
+	</bean>
+	
+<!-- Propeties -->
+	<bean id ="dataSource" class="com.spring.demo.xml.entity.property.DataSource">
+		<property name="properties">
+			<!-- props放入properties中 -->
+			<props>
+				<prop key="username">root</prop>
+				<prop key="password">password1</prop>
+				<prop key="url">jdbc:mysql://127.0.0.1:3306/test</prop>
+				<prop key="driver">com.mysql.jdbc.Driver</prop>
+			</props>
+		</property>
+		<constructor-arg name="secondProperties">
+			<!-- props放入properties中 -->
+			<props>
+				<prop key="show-sql">false</prop>
+				<prop key="context-path">aa</prop>
+			</props>
+		</constructor-arg>
+	</bean>
+	
+<!-- P -->
+	<bean id ="person9" class="com.spring.demo.xml.entity.Person" p:age="17" p:car-ref="car2"/>
+
+	<bean id ="car1" class="com.spring.demo.xml.entity.Car">
+		<property name="carName" value="blueCar"></property>
+		<property name="price" value="230"></property>
+		<property name="id" value="1"></property>
+	</bean>
+	
+	<bean id ="car2" class="com.spring.demo.xml.entity.Car">
+		<property name="carName" value="blackCar"></property>
+		<property name="price" value="330"></property>
+		<property name="id" value="2"></property>
+	</bean>
+	
+	<bean id ="car3" class="com.spring.demo.xml.entity.Car">
+		<!-- price -->
+		<constructor-arg value="139"/>
+		<!-- carName -->
+		<constructor-arg value="redCar"/>
+		<constructor-arg value="3"/>
+	</bean>
+	
+	<bean id ="address1" class="com.spring.demo.xml.entity.Address">
+		<property name="location" value="add1" />
+	</bean>
+
+	<bean id="card1" class="com.spring.demo.xml.entity.Card">
+		<property name="cardName" value="firstCard"/>
+		<property name="cardNum" value="1"/>
+	</bean>
+	
+	<bean id="card2" class="com.spring.demo.xml.entity.Card">
+		<property name="cardName" value="secondCard"/>
+		<property name="cardNum" value="2"/>
+	</bean>
+	
+</beans>

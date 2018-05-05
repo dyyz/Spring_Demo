@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding=" context/| context/|resource/|resource/context/|resource/" kind="src" path="src"/>
+	<classpathentry kind="src" path="src/resource"/>
+	<classpathentry kind="lib" path="lib/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/spring-beans-5.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring-context-5.0.5.RELEASE.jar" sourcepath="C:/Users/DY/AppData/Local/Temp/.org.sf.feeling.decompiler1525482396151/source/spring-context-5.0.5.RELEASE-sources.jar"/>
+	<classpathentry kind="lib" path="lib/spring-core-5.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring-expression-5.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/c3p0-0.9.1.2.jar" sourcepath="C:/Users/DY/AppData/Local/Temp/.org.sf.feeling.decompiler1525483994528/source/c3p0-0.9.1.2-sources.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.46.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
