@@ -6,3 +6,6 @@
 [user]
     name = 你的名字
     email = 你的邮箱
+或者
+$ git config --global user.name "usrname" 
+$ git config --global user.email " usrname@gmail.com" 
